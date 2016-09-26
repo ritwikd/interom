@@ -6,7 +6,19 @@ class Piece:
         self.color = color
 
     def valid_move(self, P_n):
-        pass
+        target = self.board.get_piece(P_n)
+        if target[0]:
+            if target.color == self.color:
+                return False
+            else:
+                # Handle movement constraints
+                pass
+                # Handle takes
+                pass
+        else:
+            # Handle movement constraints
+            pass
+
 
 
 

@@ -1,8 +1,8 @@
-import Game
+from Game import Piece
 
-class King(Game.Piece.Piece):
+class King(Piece.Piece):
     def __init__(self, board, P_s=(0,0), color=True):
-        Game.Piece.Piece.__init__(self, board, P_s, 'K', color)
+        Piece.Piece.__init__(self, board, P_s, 'K', color)
 
     def valid_move(self, P_n):
         # TODO: Implement valid move checker for king

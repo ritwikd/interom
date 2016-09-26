@@ -1,4 +1,54 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import History, Pieces, Position
+
+Pos_gen = Position.Position
+
+STARTING_POSITION = {
+
+    'white': {
+        # Main Pieces
+        'king': Pos_gen(4, 0),
+        'queen': Pos_gen(3, 0),
+        'rook1': Pos_gen(0, 0),
+        'rook2': Pos_gen(7, 0),
+        'knight1': Pos_gen(1, 0),
+        'knight2': Pos_gen(6, 0),
+        'bishop1': Pos_gen(2, 0),
+        'bishop2': Pos_gen(5, 0),
+        # Pawns
+        'pawnA': Pos_gen(0, 1),
+        'pawnB': Pos_gen(1, 1),
+        'pawnC': Pos_gen(2, 1),
+        'pawnD': Pos_gen(3, 1),
+        'pawnE': Pos_gen(4, 1),
+        'pawnF': Pos_gen(5, 1),
+        'pawnG': Pos_gen(6, 1),
+        'pawnH': Pos_gen(7, 1)
+    },
+
+    'black': {
+        # Main Pieces
+        'king': Pos_gen(4, 7),
+        'queen': Pos_gen(3, 7),
+        'rook1': Pos_gen(0, 7),
+        'rook2': Pos_gen(7, 7),
+        'knight1': Pos_gen(1, 7),
+        'knight2': Pos_gen(6, 7),
+        'bishop1': Pos_gen(2, 7),
+        'bishop2': Pos_gen(5, 7),
+        # Pawns
+        'pawnA': Pos_gen(0, 6),
+        'pawnB': Pos_gen(1, 6),
+        'pawnC': Pos_gen(2, 6),
+        'pawnD': Pos_gen(3, 6),
+        'pawnE': Pos_gen(4, 6),
+        'pawnF': Pos_gen(5, 6),
+        'pawnG': Pos_gen(6, 6),
+        'pawnH': Pos_gen(7, 6)
+    }
+}
+
 
 class Board:
     def __init__(self):
@@ -7,6 +57,25 @@ class Board:
         # Use for xy_to_alg conversion
         self.letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
         self.castle = {'K': 'O-O', 'Q': 'O-O-O'}
+        self.symbols = {
+            'white' : {
+                'K': '♔',
+                'Q': '♕',
+                'R': '♖',
+                'N': '♘',
+                'B': '♗',
+                'P': '♙',
+            },
+
+            'black' : {
+                'K' : '♚',
+                'Q' : '♛',
+                'R' : '♜',
+                'N' : '♝',
+                'B' : '♞',
+                'P' : '♟',
+            }
+        }
         self.log = History.Log.Log()
         self.taken = []
 
@@ -14,6 +83,72 @@ class Board:
         """Convert """
         return self.letters[P.x] + str(P.y + 1)
 
+    def set_start_pos(self):
+
+        K_gen = Pieces.Other.King.King
+
+        Q_gen = Pieces.Major.Queen.Queen
+        R_gen = Pieces.Major.Rook.Rook
+
+        B_gen = Pieces.Minor.Bishop.Bishop
+        N_gen = Pieces.Minor.Knight.Knight
+
+        Pl_gen = Pieces.Other.Pawn.Pawn
+
+        P_s_board = STARTING_POSITION
+        pieces_to_add = []
+
+
+        # Add white pieces
+
+        pieces_to_add.append(K_gen(self, P_s_board['white']['king'], True))
+
+        pieces_to_add.append(Q_gen(self, P_s_board['white']['queen'], True))
+
+        pieces_to_add.append(R_gen(self, P_s_board['white']['rook1'], True))
+        pieces_to_add.append(R_gen(self, P_s_board['white']['rook2'], True))
+
+        pieces_to_add.append(B_gen(self, P_s_board['white']['bishop1'], True))
+        pieces_to_add.append(B_gen(self, P_s_board['white']['bishop2'], True))
+
+        pieces_to_add.append(N_gen(self, P_s_board['white']['knight1'], True))
+        pieces_to_add.append(N_gen(self, P_s_board['white']['knight2'], True))
+
+        pieces_to_add.append(Pl_gen(self, P_s_board['white']['pawnA'], True))
+        pieces_to_add.append(Pl_gen(self, P_s_board['white']['pawnB'], True))
+        pieces_to_add.append(Pl_gen(self, P_s_board['white']['pawnC'], True))
+        pieces_to_add.append(Pl_gen(self, P_s_board['white']['pawnD'], True))
+        pieces_to_add.append(Pl_gen(self, P_s_board['white']['pawnE'], True))
+        pieces_to_add.append(Pl_gen(self, P_s_board['white']['pawnF'], True))
+        pieces_to_add.append(Pl_gen(self, P_s_board['white']['pawnG'], True))
+        pieces_to_add.append(Pl_gen(self, P_s_board['white']['pawnH'], True))
+
+        # Add black pieces
+
+        pieces_to_add.append(K_gen(self, P_s_board['black']['king'], False))
+
+        pieces_to_add.append(Q_gen(self, P_s_board['black']['queen'], False))
+
+        pieces_to_add.append(R_gen(self, P_s_board['black']['rook1'], False))
+        pieces_to_add.append(R_gen(self, P_s_board['black']['rook2'], False))
+
+        pieces_to_add.append(B_gen(self, P_s_board['black']['bishop1'], False))
+        pieces_to_add.append(B_gen(self, P_s_board['black']['bishop2'], False))
+
+        pieces_to_add.append(N_gen(self, P_s_board['black']['knight1'], False))
+        pieces_to_add.append(N_gen(self, P_s_board['black']['knight2'], False))
+
+        pieces_to_add.append(Pl_gen(self, P_s_board['black']['pawnA'], False))
+        pieces_to_add.append(Pl_gen(self, P_s_board['black']['pawnB'], False))
+        pieces_to_add.append(Pl_gen(self, P_s_board['black']['pawnC'], False))
+        pieces_to_add.append(Pl_gen(self, P_s_board['black']['pawnD'], False))
+        pieces_to_add.append(Pl_gen(self, P_s_board['black']['pawnE'], False))
+        pieces_to_add.append(Pl_gen(self, P_s_board['black']['pawnF'], False))
+        pieces_to_add.append(Pl_gen(self, P_s_board['black']['pawnG'], False))
+        pieces_to_add.append(Pl_gen(self, P_s_board['black']['pawnH'], False))
+
+        for piece in pieces_to_add:
+            self.set_piece(piece.P_c, piece)
 
     def knight_conflict(self, P_n, turn):
         Ps_c = []
@@ -126,7 +261,7 @@ class Board:
                             checks = True in map(lambda c_s: c_s[1], check_status.items())
                             mates = True in map(lambda m_s: m_s[1], self.mate_any())
                             move = History.Move.Move(white_move, Piece, P_o, P_n, False,
-                                                None, checks, mates, castle_type)
+                                                     None, checks, mates, castle_type)
                     else:
                         # Normal move
                         Piece_t = None
@@ -157,7 +292,7 @@ class Board:
                             checks = True in map(lambda c_s: c_s[1], check_status.items())
                             mates = True in map(lambda m_s: m_s[1], self.mate_any())
                             move = History.Move.Move(white_move, Piece, P_o, P_n, take,
-                                                Piece_t, checks, mates, None)
+                                                     Piece_t, checks, mates, None)
                 # Run normal moves
                 else:
                     Piece_t = None
@@ -188,7 +323,7 @@ class Board:
                         checks = True in map(lambda c_s: c_s[1], check_status.items())
                         mates = True in map(lambda m_s: m_s[1], self.mate_any())
                         move = History.Move.Move(white_move, Piece, P_o, P_n, True,
-                                            Piece_t, checks, mates, None)
+                                                 Piece_t, checks, mates, None)
             else:
                 return False
 
@@ -261,3 +396,30 @@ class Board:
             return False
         else:
             self.data[P_s.y][P_s.x] = data
+
+    def print_board(self):
+        output = [['' for x in range(8)] for y in range(8)]
+        for i in range(8):
+            for j in range(8):
+                Piece_r = self.get_piece(Pos_gen(i, j))
+                if Piece_r[0]:
+                    if Piece_r[1].color:
+                        output[j][i] = self.symbols['white'][Piece_r[1].type]
+                    else:
+                        output[j][i] = self.symbols['black'][Piece_r[1].type]
+                else:
+                    if j % 2 == 0:
+                        if i % 2 == 0:
+                            output[j][i] = u'■'
+                        else:
+                            output[j][i] = u'☐'
+                    else:
+                        if i % 2 == 0:
+                            output[j][i] = u'☐'
+                        else:
+                            output[j][i] = u'■'
+        output.reverse()
+
+        for line in output.__reversed__():
+            print ' '.join(line)
+
