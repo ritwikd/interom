@@ -1,26 +1,18 @@
-import Piece, Position, History
+import History, Pieces, Position
 
 class Board:
     def __init__(self):
-        self.data = [[None] * 8] * 8
+        self.data = [[None for x in range(8)] for y in range(8)]
 
         # Use for xy_to_alg conversion
         self.letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
         self.castle = {'K': 'O-O', 'Q': 'O-O-O'}
-        self.log = History.Log();
+        self.log = History.Log.Log()
         self.taken = []
 
     def P_to_nt(self, P):
         """Convert """
         return self.letters[P.x] + str(P.y + 1)
-
-    def king_moves(self, white_playing):
-        moves = 0
-        move_history = self.log.getAll()
-        for move in move_history:
-            if moves.Piece.type == 'K' and \
-                moves.Piece.color == white_playing:
-                moves += 1
 
 
     def knight_conflict(self, P_n, turn):
@@ -105,27 +97,68 @@ class Board:
                     castle_check = abs(P_n.x - P_o.x) == 2
                     if castle_check:
                         # Check if last move was check
-                        check_cond = self.log.getLast().check
-                        if check_cond:
+                        if self.log.getLast().check:
                             return False
                         else:
                             # Move king
                             self.set_piece(P_n, Piece)
                             self.set_piece(P_o, None)
-                            # Compute P_o and P_n for rook
+                            # Compute P_o and P_n for rook, as well as side
+                            castle_type = ''
                             if (P_n.x > P_o.x):
                                 P_rook_o = Position.Position(7, P_o.y)
                                 P_rook_n = Position.Position(4, P_o.y)
+                                if white_move:
+                                    castle_type = 'Q'
+                                else:
+                                    castle_type = 'K'
                             else:
                                 P_rook_o = Position.Position(0, P_o.y)
                                 P_rook_n = Position.Position(2, P_o.y)
+                                if white_move:
+                                    castle_type = 'K'
+                                else:
+                                    castle_type = 'Q'
                             # Move rook
                             self.set_piece(P_rook_n, self.get_piece(P_rook_o))
                             self.set_piece(P_rook_o, None)
+                            check_status = self.check_any()
+                            checks = True in map(lambda c_s: c_s[1], check_status.items())
+                            mates = True in map(lambda m_s: m_s[1], self.mate_any())
+                            move = History.Move.Move(white_move, Piece, P_o, P_n, False,
+                                                None, checks, mates, castle_type)
                     else:
                         # Normal move
-                        # TODO: Implement standard king move
+                        Piece_t = None
+                        # Get information about P_n
+                        R_P_n = self.get_piece(P_n)
+                        # Check if there is a piece at P_n
+                        take = R_P_n[0]
+                        if take:
+                            # Get object of piece at P_n
+                            Piece_t = R_P_n[1]
+                        # Make proposed move from P_o to P_n
+                        self.set_piece(P_n, Piece)
+                        self.set_piece(P_o, None)
+                        # Check if the current Player's king is now in check
+                        check_status = self.check_any()
+                        if (white_move and check_status['w'] or
+                                    not white_move and check_status['b']):
 
+                            # Revert move and return false
+                            self.set_piece(P_o, Piece)
+                            self.set_piece(P_n, None)
+                            if take:
+                                self.set_piece(P_n, Piece_t)
+                            return False
+                        else:
+                            if take:
+                                self.taken.append(Piece_t)
+                            checks = True in map(lambda c_s: c_s[1], check_status.items())
+                            mates = True in map(lambda m_s: m_s[1], self.mate_any())
+                            move = History.Move.Move(white_move, Piece, P_o, P_n, take,
+                                                Piece_t, checks, mates, None)
+                # Run normal moves
                 else:
                     Piece_t = None
                     # Get information about P_n
@@ -154,8 +187,8 @@ class Board:
                             self.taken.append(Piece_t)
                         checks = True in map(lambda c_s: c_s[1], check_status.items())
                         mates = True in map(lambda m_s: m_s[1], self.mate_any())
-                        move = History.Move(white_move, Piece, P_o, P_n, True,
-                                            Piece_t, checks, mates, )
+                        move = History.Move.Move(white_move, Piece, P_o, P_n, True,
+                                            Piece_t, checks, mates, None)
             else:
                 return False
 
@@ -209,9 +242,9 @@ class Board:
     def out_of_board(self, P):
         """ Check if given Position is within board."""
         if (P.x < 0 or P.x > 7 or P.y < 0 or P.y > 7):
-            return False
-        else:
             return True
+        else:
+            return False
 
     # Get piece at P_r (position requested)
     def get_piece(self, P_r):
@@ -227,4 +260,4 @@ class Board:
         if self.out_of_board(P_s):
             return False
         else:
-            self.board[P_s.y][P_s.x] = data
+            self.data[P_s.y][P_s.x] = data
