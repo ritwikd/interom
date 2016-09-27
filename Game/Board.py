@@ -65,6 +65,7 @@ class Board:
                 'N': '♘',
                 'B': '♗',
                 'P': '♙',
+                'S': '◽'
             },
 
             'black' : {
@@ -74,6 +75,7 @@ class Board:
                 'N' : '♝',
                 'B' : '♞',
                 'P' : '♟',
+                'S' : '◾'
             }
         }
         self.log = History.Log.Log()
@@ -99,7 +101,7 @@ class Board:
         pieces_to_add = []
 
 
-        # Add white pieces
+        # Add white Pieces
 
         pieces_to_add.append(K_gen(self, P_s_board['white']['king'], True))
 
@@ -123,7 +125,7 @@ class Board:
         pieces_to_add.append(Pl_gen(self, P_s_board['white']['pawnG'], True))
         pieces_to_add.append(Pl_gen(self, P_s_board['white']['pawnH'], True))
 
-        # Add black pieces
+        # Add black Pieces
 
         pieces_to_add.append(K_gen(self, P_s_board['black']['king'], False))
 
@@ -262,6 +264,9 @@ class Board:
                             mates = True in map(lambda m_s: m_s[1], self.mate_any())
                             move = History.Move.Move(white_move, Piece, P_o, P_n, False,
                                                      None, checks, mates, castle_type)
+                            Piece.P_c = P_n
+                            self.log.addMove(move)
+                            return True
                     else:
                         # Normal move
                         Piece_t = None
@@ -293,6 +298,9 @@ class Board:
                             mates = True in map(lambda m_s: m_s[1], self.mate_any())
                             move = History.Move.Move(white_move, Piece, P_o, P_n, take,
                                                      Piece_t, checks, mates, None)
+                            Piece.P_c = P_n
+                            self.log.addMove(move)
+                            return True
                 # Run normal moves
                 else:
                     Piece_t = None
@@ -324,6 +332,9 @@ class Board:
                         mates = True in map(lambda m_s: m_s[1], self.mate_any())
                         move = History.Move.Move(white_move, Piece, P_o, P_n, True,
                                                  Piece_t, checks, mates, None)
+                        Piece.P_c = P_n
+                        self.log.addMove(move)
+                        return True
             else:
                 return False
 
@@ -410,16 +421,16 @@ class Board:
                 else:
                     if j % 2 == 0:
                         if i % 2 == 0:
-                            output[j][i] = u'■'
+                            output[j][i] = self.symbols['black']['S']
                         else:
-                            output[j][i] = u'☐'
+                            output[j][i] = self.symbols['white']['S']
                     else:
                         if i % 2 == 0:
-                            output[j][i] = u'☐'
+                            output[j][i] = self.symbols['white']['S']
                         else:
-                            output[j][i] = u'■'
+                            output[j][i] = self.symbols['black']['S']
         output.reverse()
 
-        for line in output.__reversed__():
+        for line in output:
             print ' '.join(line)
 
