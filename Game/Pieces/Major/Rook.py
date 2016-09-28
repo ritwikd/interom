@@ -7,7 +7,6 @@ class Rook(Piece.Piece):
         Piece.Piece.__init__(self, board, P_s, 'R', color)
 
     def valid_move(self, P_n):
-
         # Compute deltas and displacement for new move
         d_x = abs(P_n.x - self.P_c.x)
         dsp_x = P_n.x - self.P_c.x

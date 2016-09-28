@@ -8,21 +8,17 @@ class Knight(Piece.Piece):
         d_x = abs(P_n.x - self.P_c.x)
         d_y = abs(P_n.y - self.P_c.y)
 
-        # Get board info for new position (P_n)
+        if self.board.out_of_board(P_n):
+            return False
+
+        # Check if knight P_n contains same-color piece
         R_P_n =  self.board.get_piece(P_n)
         if R_P_n[0]:
-            # Check if same-color piece there
-            if R_P_n[1].color != self.color:
-                # Check if valid knight pattern
-                if (d_x == 2 and d_y == 1 or d_y == 1 and d_x == 2):
-                    return True
-                else:
-                    return False
-            else:
+            if R_P_n[1].color == self.color:
                 return False
+
+        # Check if movement is valid for Knight (2x1 L-shape)
+        if (d_x == 2 and d_y == 1 or d_y == 1 and d_x == 2):
+            return True
         else:
-            # Check if valid knight pattern
-            if (d_x == 2 and d_y == 1 or d_y == 1 and d_x == 2):
-                return True
-            else:
-                return False
+            return False

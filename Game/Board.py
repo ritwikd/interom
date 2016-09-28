@@ -202,6 +202,10 @@ class Board:
                     if R[1].color == turn:
                         rooks.append(R[1])
 
+        for rook in rooks:
+            if not rook.valid_move(P_n):
+                return 0
+
         if (len(rooks) > 1):
             if rooks[0].P_c.x == rooks[1].P_c.x:
                 return 2
@@ -260,11 +264,12 @@ class Board:
                             self.set_piece(P_rook_n, self.get_piece(P_rook_o))
                             self.set_piece(P_rook_o, None)
                             check_status = self.check_any()
+                            mate_status = self.check_any()
                             checks = True in map(lambda c_s: c_s[1], check_status.items())
-                            mates = True in map(lambda m_s: m_s[1], self.mate_any())
+                            mates = True in map(lambda m_s: m_s[1], mate_status.items())
+                            Piece.P_c = P_n
                             move = History.Move.Move(white_move, Piece, P_o, P_n, False,
                                                      None, checks, mates, castle_type)
-                            Piece.P_c = P_n
                             self.log.addMove(move)
                             return True
                     else:
@@ -282,6 +287,7 @@ class Board:
                         self.set_piece(P_o, None)
                         # Check if the current Player's king is now in check
                         check_status = self.check_any()
+                        mate_status = self.mate_any()
                         if (white_move and check_status['w'] or
                                     not white_move and check_status['b']):
 
@@ -295,10 +301,10 @@ class Board:
                             if take:
                                 self.taken.append(Piece_t)
                             checks = True in map(lambda c_s: c_s[1], check_status.items())
-                            mates = True in map(lambda m_s: m_s[1], self.mate_any())
+                            mates = True in map(lambda m_s: m_s[1], mate_status.items())
+                            Piece.P_c = P_n
                             move = History.Move.Move(white_move, Piece, P_o, P_n, take,
                                                      Piece_t, checks, mates, None)
-                            Piece.P_c = P_n
                             self.log.addMove(move)
                             return True
                 # Run normal moves
@@ -316,6 +322,7 @@ class Board:
                     self.set_piece(P_o, None)
                     # Check if the current Player's king is now in check
                     check_status = self.check_any()
+                    mate_status = self.mate_any()
                     if (white_move and check_status['w'] or
                                 not white_move and check_status['b']):
 
@@ -329,10 +336,10 @@ class Board:
                         if take:
                             self.taken.append(Piece_t)
                         checks = True in map(lambda c_s: c_s[1], check_status.items())
-                        mates = True in map(lambda m_s: m_s[1], self.mate_any())
+                        mates = True in map(lambda m_s: m_s[1], mate_status.items())
+                        Piece.P_c = P_n
                         move = History.Move.Move(white_move, Piece, P_o, P_n, True,
                                                  Piece_t, checks, mates, None)
-                        Piece.P_c = P_n
                         self.log.addMove(move)
                         return True
             else:
@@ -361,8 +368,8 @@ class Board:
 
             # Knight and Rook Handling
             poss_conf = {}
-            poss_conf['R'] = self.rook_conflict(M.P_n)
-            poss_conf['N'] = self.knight_conflict(M.p_n)
+            poss_conf['R'] = self.rook_conflict(M.P_n, M.color)
+            poss_conf['N'] = self.knight_conflict(M.P_n, M.color)
 
             if M.Piece.type == 'N' and poss_conf['N'] > 0:
                 output += P_n_not[poss_conf['N'] - 1]
@@ -384,6 +391,8 @@ class Board:
                 output += '#'
             else:
                 output += '+'
+
+        return output
 
     def out_of_board(self, P):
         """ Check if given Position is within board."""
@@ -433,4 +442,11 @@ class Board:
 
         for line in output:
             print ' '.join(line)
+
+    def print_alg(self):
+        moves = self.log.getAll()
+        output = []
+        for move in moves:
+            output.append(self.move_to_alg(move))
+        return '\n'.join(output)
 

@@ -6,39 +6,29 @@ class ValidMoveTest(unittest.TestCase):
         self.board = Game.Board.Board()
         self.board.set_start_pos()
 
+    def test_queen(self):
+        print 'Testing valid_move implementation for: QUEEN'
+        self.assertEqual(True, False)
+
     def test_rook(self):
         print 'Testing valid_move implementation for: ROOK'
-        rookPos = Game.Position.Position(7, 0)
-        rookObject = self.board.get_piece(rookPos)[1]
-        rookVertMovePos = Game.Position.Position(7, 3)
-        self.assertEqual(False, rookObject.valid_move(rookVertMovePos))
-        pawnBlockPos = Game.Position.Position(7, 1)
-        self.board.set_piece(pawnBlockPos, None)
-        self.assertEqual(True, rookObject.valid_move(rookVertMovePos))
-        self.board.set_piece(rookVertMovePos, rookObject)
-        self.board.set_piece(rookPos, None)
-        rookObject.P_c = rookVertMovePos
-        rookHorizontalMovePos = Game.Position.Position(0, 3)
-        self.assertEqual(True, rookObject.valid_move(rookHorizontalMovePos))
-        rookObject.P_c = rookHorizontalMovePos
+        self.assertEqual(True, False)
+
+    def test_knight(self):
+        print 'Testing valid_move implementation for: KNIGHT'
+        self.assertEqual(True, False)
 
     def test_bishop(self):
         print 'Testing valid_move implementation for: BISHOP'
-        bishopWhiteSquaresPos = Game.Position.Position(5, 0)
-        bishopWhiteSquares = self.board.get_piece(bishopWhiteSquaresPos)[1]
-        bishopWhiteSquaresMovePos = Game.Position.Position(3, 2)
-        pawnBlockBishopWhiteSquares = Game.Position.Position(4, 1)
-        self.assertEqual(False, bishopWhiteSquares.valid_move(bishopWhiteSquaresMovePos))
-        self.board.set_piece(pawnBlockBishopWhiteSquares, None)
-        self.assertEqual(True, bishopWhiteSquares.valid_move(bishopWhiteSquaresMovePos))
+        self.assertEqual(True, False)
 
-        bishopBlackSquaresPos = Game.Position.Position(2, 0)
-        bishopBlackSquares = self.board.get_piece(bishopBlackSquaresPos)[1]
-        bishopBlackSquaresMovePos = Game.Position.Position(4, 2)
-        pawnBlockBishopBlackSquares = Game.Position.Position(3, 1)
-        self.assertEqual(False, bishopBlackSquares.valid_move(bishopBlackSquaresMovePos))
-        self.board.set_piece(pawnBlockBishopBlackSquares, None)
-        self.assertEqual(True, bishopBlackSquares.valid_move(bishopBlackSquaresMovePos))
+    def test_king(self):
+        print 'Testing valid_move implementation for: KING'
+        self.assertEqual(True, False)
+
+    def test_pawn(self):
+        print 'Testing valid_move implementation for: PAWN'
+        self.assertEqual(True, False)
 
 
 
