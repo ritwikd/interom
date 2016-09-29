@@ -214,8 +214,44 @@ class Board:
         else:
             return 0
 
+    def potential_check_square(self, P_p_c, C_p_c):
+        # Determine if position could potentially be in check
+        for rank in self.data:
+            for square in rank:
+                if square != None:
+                    if square.color != C_p_c:
+                        if square.valid_move(P_p_c):
+                            return True
+
+        return False
+
     def check_any(self):
         check_status = {'w': False, 'b': False}
+        p_kings = { 'w': None, 'b': None}
+
+        # Get king positions
+        for rank in self.data:
+            for square in rank:
+                if square != None:
+                    if square.type == 'K':
+                        if square.color:
+                            p_kings['w'] = square
+                        else:
+                            p_kings['b'] = square
+
+        # Determine if either king is in check
+        for rank in self.data:
+            for square in rank:
+                if square != None:
+                    if square.color:
+                        black_check = square.valid_move(p_kings['b'])
+                        if black_check:
+                            check_status['b'] = black_check
+                    else:
+                        white_check = square.valid_move(p_kings['w'])
+                        if white_check:
+                            check_status['w'] = white_check
+
         return check_status
 
     def mate_any(self):
@@ -238,7 +274,7 @@ class Board:
                     castle_check = abs(P_n.x - P_o.x) == 2
                     if castle_check:
                         # Check if last move was check
-                        if self.log.getLast().check:
+                        if self.log.get_last_move().check:
                             return False
                         else:
                             # Move king
@@ -267,10 +303,19 @@ class Board:
                             mate_status = self.check_any()
                             checks = True in map(lambda c_s: c_s[1], check_status.items())
                             mates = True in map(lambda m_s: m_s[1], mate_status.items())
+                            if (white_move and check_status['w'] or
+                                        not white_move and check_status['b']):
+
+                                # Revert move and return false
+                                self.set_piece(P_rook_o, self.get_piece(P_rook_n))
+                                self.set_piece(P_o, self.get_piece(P_n))
+                                self.set_piece(P_rook_n, None)
+                                self.set_piece(P_n, None)
+                                return False
                             Piece.P_c = P_n
                             move = History.Move.Move(white_move, Piece, P_o, P_n, False,
                                                      None, checks, mates, castle_type)
-                            self.log.addMove(move)
+                            self.log.add_move(move)
                             return True
                     else:
                         # Normal move
@@ -297,16 +342,15 @@ class Board:
                             if take:
                                 self.set_piece(P_n, Piece_t)
                             return False
-                        else:
-                            if take:
-                                self.taken.append(Piece_t)
-                            checks = True in map(lambda c_s: c_s[1], check_status.items())
-                            mates = True in map(lambda m_s: m_s[1], mate_status.items())
-                            Piece.P_c = P_n
-                            move = History.Move.Move(white_move, Piece, P_o, P_n, take,
-                                                     Piece_t, checks, mates, None)
-                            self.log.addMove(move)
-                            return True
+                        if take:
+                            self.taken.append(Piece_t)
+                        checks = True in map(lambda c_s: c_s[1], check_status.items())
+                        mates = True in map(lambda m_s: m_s[1], mate_status.items())
+                        Piece.P_c = P_n
+                        move = History.Move.Move(white_move, Piece, P_o, P_n, take,
+                                                 Piece_t, checks, mates, None)
+                        self.log.add_move(move)
+                        return True
                 # Run normal moves
                 else:
                     Piece_t = None
@@ -332,16 +376,15 @@ class Board:
                         if take:
                             self.set_piece(P_n, Piece_t)
                         return False
-                    else:
-                        if take:
-                            self.taken.append(Piece_t)
-                        checks = True in map(lambda c_s: c_s[1], check_status.items())
-                        mates = True in map(lambda m_s: m_s[1], mate_status.items())
-                        Piece.P_c = P_n
-                        move = History.Move.Move(white_move, Piece, P_o, P_n, True,
-                                                 Piece_t, checks, mates, None)
-                        self.log.addMove(move)
-                        return True
+                    if take:
+                        self.taken.append(Piece_t)
+                    checks = True in map(lambda c_s: c_s[1], check_status.items())
+                    mates = True in map(lambda m_s: m_s[1], mate_status.items())
+                    Piece.P_c = P_n
+                    move = History.Move.Move(white_move, Piece, P_o, P_n, True,
+                                             Piece_t, checks, mates, None)
+                    self.log.add_move(move)
+                    return True
             else:
                 return False
 
@@ -444,7 +487,7 @@ class Board:
             print ' '.join(line)
 
     def print_alg(self):
-        moves = self.log.getAll()
+        moves = self.log.get_move_history()
         output = []
         for move in moves:
             output.append(self.move_to_alg(move))
