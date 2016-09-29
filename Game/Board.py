@@ -87,67 +87,62 @@ class Board:
 
     def set_start_pos(self):
 
-        K_gen = Pieces.Other.King.King
-
-        Q_gen = Pieces.Major.Queen.Queen
-        R_gen = Pieces.Major.Rook.Rook
-
-        B_gen = Pieces.Minor.Bishop.Bishop
-        N_gen = Pieces.Minor.Knight.Knight
-
-        Pl_gen = Pieces.Other.Pawn.Pawn
+        K = Pieces.Other.King.King
+        Q = Pieces.Major.Queen.Queen
+        R = Pieces.Major.Rook.Rook
+        B = Pieces.Minor.Bishop.Bishop
+        N = Pieces.Minor.Knight.Knight
+        Pl = Pieces.Other.Pawn.Pawn
 
         P_s_board = STARTING_POSITION
         pieces_to_add = []
 
-
         # Add white Pieces
+        pieces_to_add.append(K(self, P_s_board['white']['king'], True))
 
-        pieces_to_add.append(K_gen(self, P_s_board['white']['king'], True))
+        pieces_to_add.append(Q(self, P_s_board['white']['queen'], True))
 
-        pieces_to_add.append(Q_gen(self, P_s_board['white']['queen'], True))
+        pieces_to_add.append(R(self, P_s_board['white']['rook1'], True))
+        pieces_to_add.append(R(self, P_s_board['white']['rook2'], True))
 
-        pieces_to_add.append(R_gen(self, P_s_board['white']['rook1'], True))
-        pieces_to_add.append(R_gen(self, P_s_board['white']['rook2'], True))
+        pieces_to_add.append(B(self, P_s_board['white']['bishop1'], True))
+        pieces_to_add.append(B(self, P_s_board['white']['bishop2'], True))
 
-        pieces_to_add.append(B_gen(self, P_s_board['white']['bishop1'], True))
-        pieces_to_add.append(B_gen(self, P_s_board['white']['bishop2'], True))
+        pieces_to_add.append(N(self, P_s_board['white']['knight1'], True))
+        pieces_to_add.append(N(self, P_s_board['white']['knight2'], True))
 
-        pieces_to_add.append(N_gen(self, P_s_board['white']['knight1'], True))
-        pieces_to_add.append(N_gen(self, P_s_board['white']['knight2'], True))
-
-        pieces_to_add.append(Pl_gen(self, P_s_board['white']['pawnA'], True))
-        pieces_to_add.append(Pl_gen(self, P_s_board['white']['pawnB'], True))
-        pieces_to_add.append(Pl_gen(self, P_s_board['white']['pawnC'], True))
-        pieces_to_add.append(Pl_gen(self, P_s_board['white']['pawnD'], True))
-        pieces_to_add.append(Pl_gen(self, P_s_board['white']['pawnE'], True))
-        pieces_to_add.append(Pl_gen(self, P_s_board['white']['pawnF'], True))
-        pieces_to_add.append(Pl_gen(self, P_s_board['white']['pawnG'], True))
-        pieces_to_add.append(Pl_gen(self, P_s_board['white']['pawnH'], True))
+        pieces_to_add.append(Pl(self, P_s_board['white']['pawnA'], True))
+        pieces_to_add.append(Pl(self, P_s_board['white']['pawnB'], True))
+        pieces_to_add.append(Pl(self, P_s_board['white']['pawnC'], True))
+        pieces_to_add.append(Pl(self, P_s_board['white']['pawnD'], True))
+        pieces_to_add.append(Pl(self, P_s_board['white']['pawnE'], True))
+        pieces_to_add.append(Pl(self, P_s_board['white']['pawnF'], True))
+        pieces_to_add.append(Pl(self, P_s_board['white']['pawnG'], True))
+        pieces_to_add.append(Pl(self, P_s_board['white']['pawnH'], True))
 
         # Add black Pieces
 
-        pieces_to_add.append(K_gen(self, P_s_board['black']['king'], False))
+        pieces_to_add.append(K(self, P_s_board['black']['king'], False))
 
-        pieces_to_add.append(Q_gen(self, P_s_board['black']['queen'], False))
+        pieces_to_add.append(Q(self, P_s_board['black']['queen'], False))
 
-        pieces_to_add.append(R_gen(self, P_s_board['black']['rook1'], False))
-        pieces_to_add.append(R_gen(self, P_s_board['black']['rook2'], False))
+        pieces_to_add.append(R(self, P_s_board['black']['rook1'], False))
+        pieces_to_add.append(R(self, P_s_board['black']['rook2'], False))
 
-        pieces_to_add.append(B_gen(self, P_s_board['black']['bishop1'], False))
-        pieces_to_add.append(B_gen(self, P_s_board['black']['bishop2'], False))
+        pieces_to_add.append(B(self, P_s_board['black']['bishop1'], False))
+        pieces_to_add.append(B(self, P_s_board['black']['bishop2'], False))
 
-        pieces_to_add.append(N_gen(self, P_s_board['black']['knight1'], False))
-        pieces_to_add.append(N_gen(self, P_s_board['black']['knight2'], False))
+        pieces_to_add.append(N(self, P_s_board['black']['knight1'], False))
+        pieces_to_add.append(N(self, P_s_board['black']['knight2'], False))
 
-        pieces_to_add.append(Pl_gen(self, P_s_board['black']['pawnA'], False))
-        pieces_to_add.append(Pl_gen(self, P_s_board['black']['pawnB'], False))
-        pieces_to_add.append(Pl_gen(self, P_s_board['black']['pawnC'], False))
-        pieces_to_add.append(Pl_gen(self, P_s_board['black']['pawnD'], False))
-        pieces_to_add.append(Pl_gen(self, P_s_board['black']['pawnE'], False))
-        pieces_to_add.append(Pl_gen(self, P_s_board['black']['pawnF'], False))
-        pieces_to_add.append(Pl_gen(self, P_s_board['black']['pawnG'], False))
-        pieces_to_add.append(Pl_gen(self, P_s_board['black']['pawnH'], False))
+        pieces_to_add.append(Pl(self, P_s_board['black']['pawnA'], False))
+        pieces_to_add.append(Pl(self, P_s_board['black']['pawnB'], False))
+        pieces_to_add.append(Pl(self, P_s_board['black']['pawnC'], False))
+        pieces_to_add.append(Pl(self, P_s_board['black']['pawnD'], False))
+        pieces_to_add.append(Pl(self, P_s_board['black']['pawnE'], False))
+        pieces_to_add.append(Pl(self, P_s_board['black']['pawnF'], False))
+        pieces_to_add.append(Pl(self, P_s_board['black']['pawnG'], False))
+        pieces_to_add.append(Pl(self, P_s_board['black']['pawnH'], False))
 
         for piece in pieces_to_add:
             self.set_piece(piece.P_c, piece)
@@ -235,9 +230,9 @@ class Board:
                 if square != None:
                     if square.type == 'K':
                         if square.color:
-                            p_kings['w'] = square
+                            p_kings['w'] = square.P_c
                         else:
-                            p_kings['b'] = square
+                            p_kings['b'] = square.P_c
 
         # Determine if either king is in check
         for rank in self.data:
@@ -312,7 +307,6 @@ class Board:
                                 self.set_piece(P_rook_n, None)
                                 self.set_piece(P_n, None)
                                 return False
-                            Piece.P_c = P_n
                             move = History.Move.Move(white_move, Piece, P_o, P_n, False,
                                                      None, checks, mates, castle_type)
                             self.log.add_move(move)
@@ -346,7 +340,6 @@ class Board:
                             self.taken.append(Piece_t)
                         checks = True in map(lambda c_s: c_s[1], check_status.items())
                         mates = True in map(lambda m_s: m_s[1], mate_status.items())
-                        Piece.P_c = P_n
                         move = History.Move.Move(white_move, Piece, P_o, P_n, take,
                                                  Piece_t, checks, mates, None)
                         self.log.add_move(move)
@@ -380,7 +373,6 @@ class Board:
                         self.taken.append(Piece_t)
                     checks = True in map(lambda c_s: c_s[1], check_status.items())
                     mates = True in map(lambda m_s: m_s[1], mate_status.items())
-                    Piece.P_c = P_n
                     move = History.Move.Move(white_move, Piece, P_o, P_n, True,
                                              Piece_t, checks, mates, None)
                     self.log.add_move(move)
@@ -458,8 +450,9 @@ class Board:
         if self.out_of_board(P_s):
             return False
         else:
+            if data != None:
+                data.P_c = P_s
             self.data[P_s.y][P_s.x] = data
-
     def print_board(self):
         output = [['' for x in range(8)] for y in range(8)]
         for i in range(8):
