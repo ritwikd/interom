@@ -2,50 +2,50 @@
 from __future__ import unicode_literals
 import History, Pieces, Position
 
-Pos_gen = Position.Position
+P = Position.Position
 
 STARTING_POSITION = {
 
     'white': {
         # Main Pieces
-        'king': Pos_gen(4, 0),
-        'queen': Pos_gen(3, 0),
-        'rook1': Pos_gen(0, 0),
-        'rook2': Pos_gen(7, 0),
-        'knight1': Pos_gen(1, 0),
-        'knight2': Pos_gen(6, 0),
-        'bishop1': Pos_gen(2, 0),
-        'bishop2': Pos_gen(5, 0),
+        'king': P(4, 0),
+        'queen': P(3, 0),
+        'rook1': P(0, 0),
+        'rook2': P(7, 0),
+        'knight1': P(1, 0),
+        'knight2': P(6, 0),
+        'bishop1': P(2, 0),
+        'bishop2': P(5, 0),
         # Pawns
-        'pawnA': Pos_gen(0, 1),
-        'pawnB': Pos_gen(1, 1),
-        'pawnC': Pos_gen(2, 1),
-        'pawnD': Pos_gen(3, 1),
-        'pawnE': Pos_gen(4, 1),
-        'pawnF': Pos_gen(5, 1),
-        'pawnG': Pos_gen(6, 1),
-        'pawnH': Pos_gen(7, 1)
+        'pawnA': P(0, 1),
+        'pawnB': P(1, 1),
+        'pawnC': P(2, 1),
+        'pawnD': P(3, 1),
+        'pawnE': P(4, 1),
+        'pawnF': P(5, 1),
+        'pawnG': P(6, 1),
+        'pawnH': P(7, 1)
     },
 
     'black': {
         # Main Pieces
-        'king': Pos_gen(4, 7),
-        'queen': Pos_gen(3, 7),
-        'rook1': Pos_gen(0, 7),
-        'rook2': Pos_gen(7, 7),
-        'knight1': Pos_gen(1, 7),
-        'knight2': Pos_gen(6, 7),
-        'bishop1': Pos_gen(2, 7),
-        'bishop2': Pos_gen(5, 7),
+        'king': P(4, 7),
+        'queen': P(3, 7),
+        'rook1': P(0, 7),
+        'rook2': P(7, 7),
+        'knight1': P(1, 7),
+        'knight2': P(6, 7),
+        'bishop1': P(2, 7),
+        'bishop2': P(5, 7),
         # Pawns
-        'pawnA': Pos_gen(0, 6),
-        'pawnB': Pos_gen(1, 6),
-        'pawnC': Pos_gen(2, 6),
-        'pawnD': Pos_gen(3, 6),
-        'pawnE': Pos_gen(4, 6),
-        'pawnF': Pos_gen(5, 6),
-        'pawnG': Pos_gen(6, 6),
-        'pawnH': Pos_gen(7, 6)
+        'pawnA': P(0, 6),
+        'pawnB': P(1, 6),
+        'pawnC': P(2, 6),
+        'pawnD': P(3, 6),
+        'pawnE': P(4, 6),
+        'pawnF': P(5, 6),
+        'pawnG': P(6, 6),
+        'pawnH': P(7, 6)
     }
 }
 
@@ -58,7 +58,7 @@ class Board:
         self.letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
         self.castle = {'K': 'O-O', 'Q': 'O-O-O'}
         self.symbols = {
-            'white' : {
+            'white': {
                 'K': '♔',
                 'Q': '♕',
                 'R': '♖',
@@ -68,14 +68,14 @@ class Board:
                 'S': '◽'
             },
 
-            'black' : {
-                'K' : '♚',
-                'Q' : '♛',
-                'R' : '♜',
-                'N' : '♝',
-                'B' : '♞',
-                'P' : '♟',
-                'S' : '◾'
+            'black': {
+                'K': '♚',
+                'Q': '♛',
+                'R': '♜',
+                'N': '♝',
+                'B': '♞',
+                'P': '♟',
+                'S': '◾'
             }
         }
         self.log = History.Log.Log()
@@ -222,7 +222,7 @@ class Board:
 
     def check_any(self):
         check_status = {'w': False, 'b': False}
-        p_kings = { 'w': None, 'b': None}
+        p_kings = {'w': None, 'b': None}
 
         # Get king positions
         for rank in self.data:
@@ -265,7 +265,105 @@ class Board:
             # Check if P_n is a valid move for Piece at P_o
             if Piece.valid_move(P_n):
                 # Check for castling
-                if Piece.type == 'K':
+                if Piece.type == 'P':
+                    Piece_t = None
+                    R_P_n = self.get_piece(P_n)
+                    # Check if there is a piece at P_n
+                    take = R_P_n[0]
+                    if take:
+                        # Get object of piece at P_n
+                        Piece_t = R_P_n[1]
+                        Piece_t = None
+                        # Get information about P_n
+                        R_P_n = self.get_piece(P_n)
+                        # Check if there is a piece at P_n
+                        take = R_P_n[0]
+                        if take:
+                            # Get object of piece at P_n
+                            Piece_t = R_P_n[1]
+                        # Make proposed move from P_o to P_n
+                        self.set_piece(P_n, Piece)
+                        self.set_piece(P_o, None)
+                        # Check if the current Player's king is now in check
+                        check_status = self.check_any()
+                        mate_status = self.mate_any()
+                        if (white_move and check_status['w'] or
+                                    not white_move and check_status['b']):
+
+                            # Revert move and return false
+                            self.set_piece(P_o, Piece)
+                            self.set_piece(P_n, None)
+                            if take:
+                                self.set_piece(P_n, Piece_t)
+                            return False
+                        if take:
+                            self.taken.append(Piece_t)
+                        checks = True in map(lambda c_s: c_s[1], check_status.items())
+                        mates = True in map(lambda m_s: m_s[1], mate_status.items())
+                        move = History.Move.Move(white_move, Piece, P_o, P_n, True,
+                                                 Piece_t, checks, mates, None)
+                        self.log.add_move(move)
+                        return True
+                    else:
+                        ep_check = abs(P_n.y - P_o.y) == 1 and abs(P_n.x - P_o.x) == 1
+                        if ep_check:
+                            P_ep_p = P(P_n.x, P_o.y)
+                            ep_p = self.get_piece(P_ep_p)[1]
+                            self.set_piece(P_n, Piece)
+                            self.set_piece(P_o, None)
+                            self.set_piece(P_ep_p, None)
+                            # Check if the current Player's king is now in check
+                            check_status = self.check_any()
+                            mate_status = self.mate_any()
+                            if (white_move and check_status['w'] or
+                                        not white_move and check_status['b']):
+                                # Revert move and return false
+                                self.set_piece(P_o, Piece)
+                                self.set_piece(P_n, None)
+                                self.set_piece(P_ep_p, ep_p)
+                                return False
+                            self.taken.append(ep_p)
+                            checks = True in map(lambda c_s: c_s[1], check_status.items())
+                            mates = True in map(lambda m_s: m_s[1], mate_status.items())
+                            move = History.Move.Move(white_move, Piece, P_o, P_n, True,
+                                                     ep_p, checks, mates, None)
+                            self.log.add_move(move)
+                            return True
+                        else:
+                            Piece_t = None
+                            # Get information about P_n
+                            R_P_n = self.get_piece(P_n)
+                            # Check if there is a piece at P_n
+                            take = R_P_n[0]
+                            if take:
+                                # Get object of piece at P_n
+                                Piece_t = R_P_n[1]
+                            # Make proposed move from P_o to P_n
+                            self.set_piece(P_n, Piece)
+                            self.set_piece(P_o, None)
+                            # Check if the current Player's king is now in check
+                            check_status = self.check_any()
+                            mate_status = self.mate_any()
+                            if (white_move and check_status['w'] or
+                                        not white_move and check_status['b']):
+
+                                # Revert move and return false
+                                self.set_piece(P_o, Piece)
+                                self.set_piece(P_n, None)
+                                if take:
+                                    self.set_piece(P_n, Piece_t)
+                                return False
+                            if take:
+                                self.taken.append(Piece_t)
+                            checks = True in map(lambda c_s: c_s[1], check_status.items())
+                            mates = True in map(lambda m_s: m_s[1], mate_status.items())
+                            move = History.Move.Move(white_move, Piece, P_o, P_n, True,
+                                                     Piece_t, checks, mates, None)
+                            self.log.add_move(move)
+                            return True
+
+
+                elif Piece.type == 'K':
                     castle_check = abs(P_n.x - P_o.x) == 2
                     if castle_check:
                         # Check if last move was check
@@ -300,7 +398,6 @@ class Board:
                             mates = True in map(lambda m_s: m_s[1], mate_status.items())
                             if (white_move and check_status['w'] or
                                         not white_move and check_status['b']):
-
                                 # Revert move and return false
                                 self.set_piece(P_rook_o, self.get_piece(P_rook_n))
                                 self.set_piece(P_o, self.get_piece(P_n))
@@ -453,11 +550,12 @@ class Board:
             if data != None:
                 data.P_c = P_s
             self.data[P_s.y][P_s.x] = data
+
     def print_board(self):
         output = [['' for x in range(8)] for y in range(8)]
         for i in range(8):
             for j in range(8):
-                Piece_r = self.get_piece(Pos_gen(i, j))
+                Piece_r = self.get_piece(P(i, j))
                 if Piece_r[0]:
                     if Piece_r[1].color:
                         output[j][i] = self.symbols['white'][Piece_r[1].type]
@@ -479,10 +577,9 @@ class Board:
         for line in output:
             print ' '.join(line)
 
-    def print_alg(self):
+    def game_to_alg(self):
         moves = self.log.get_move_history()
         output = []
         for move in moves:
             output.append(self.move_to_alg(move))
         return '\n'.join(output)
-

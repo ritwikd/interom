@@ -1,6 +1,6 @@
 from Game import Piece, Position
 
-P_gen = Position.Position
+P = Position.Position
 
 class King(Piece.Piece):
     def __init__(self, board, P_s=(0,0), color=True):
@@ -47,7 +47,7 @@ class King(Piece.Piece):
                 C_x_t = list(xrange(P_n.x, self.P_c.x, 1))
             else:
                 C_x_t = list(xrange(self.P_c.x, P_n.x, 1))
-            Ps_c = map(lambda x: P_gen(x, P_n.y), C_x_t)
+            Ps_c = map(lambda x: P(x, P_n.y), C_x_t)
             for P_c in Ps_c:
                 if P_c.x not in [self.P_c.x]:
                     R_P_c = self.board.get_piece(P_c)
@@ -55,7 +55,7 @@ class King(Piece.Piece):
                         return False
 
             # Find rook and check if it exists
-            P_rook = P_gen(0, self.P_c.y)
+            P_rook = P(0, self.P_c.y)
             if dsp_x > 0:
                 P_rook.x == 7
             R_rook = self.board.get_piece(P_rook)
