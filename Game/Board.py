@@ -78,6 +78,19 @@ class Board:
                 'S': '◾'
             }
         }
+
+        self.alg_castle = {
+            True: {
+                'O-O': [P(4,0), P(6,0)],
+                'O-O-O' : [P(4,0), P(2,0)]
+            },
+            False: {
+                'O-O': [P(4,7), P(6,7)],
+                'O-O-O': [P(4,7), P(2,7)]
+            }
+        }
+
+        self.types = ['K','Q','R','B','N']
         self.log = History.Log.Log()
         self.taken = []
 
@@ -251,9 +264,13 @@ class Board:
 
     def mate_any(self):
         mate_status = {'w': False, 'b': False}
+
         return mate_status
 
-    def do_move(self, P_o, P_n):
+    #def revert_move(self, move):
+
+
+    def do_move(self, P_o, P_n, S_i):
         """Move piece from Position Orig (P_o) to Position New (P_n) """
 
         # Get information about P_o
