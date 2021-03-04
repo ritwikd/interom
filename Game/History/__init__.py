@@ -1,1 +1,1 @@
-import Log, Move
+from . import Log, Move

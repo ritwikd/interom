@@ -7,31 +7,31 @@ class AlgNoteTest(unittest.TestCase):
         self.board.set_start_pos()
 
     def test_take(self):
-        print 'Testing algebraic notation implementation for: TAKE'
+        print('Testing algebraic notation implementation for: TAKE')
         self.assertEqual(True, False)
 
     def test_castle_queenside(self):
-        print 'Testing algebraic notation implementation for: CASTLING QUEENSIDE'
+        print('Testing algebraic notation implementation for: CASTLING QUEENSIDE')
         self.assertEqual(True, False)
 
     def test_castle_kingside(self):
-        print 'Testing algebraic notation implementation for: CASTLING KINGSIDE'
+        print('Testing algebraic notation implementation for: CASTLING KINGSIDE')
         self.assertEqual(True, False)
 
     def test_rook_conflict(self):
-        print 'Testing algebraic notation implementation for: ROOK CONFLICT'
+        print('Testing algebraic notation implementation for: ROOK CONFLICT')
         self.assertEqual(True, False)
 
     def test_knight_conflict(self):
-        print 'Testing algebraic notation implementation for: KNIGHT CONFLICT'
+        print('Testing algebraic notation implementation for: KNIGHT CONFLICT')
         self.assertEqual(True, False)
 
     def test_check(self):
-        print 'Testing algebraic notation implementation for: CHECK'
+        print('Testing algebraic notation implementation for: CHECK')
         self.assertEqual(True, False)
 
     def test_mate(self):
-        print 'Testing algebraic notation implementation for: CHECKMATE'
+        print('Testing algebraic notation implementation for: CHECKMATE')
         self.assertEqual(True, False)
 
 

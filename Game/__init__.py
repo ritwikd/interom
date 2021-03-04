@@ -1,3 +1,3 @@
-import Board, Piece, Position
-import History
-import Pieces
+from . import Board, Piece, Position
+from . import History
+from . import Pieces

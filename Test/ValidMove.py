@@ -7,27 +7,27 @@ class ValidMoveTest(unittest.TestCase):
         self.board.set_start_pos()
 
     def test_queen(self):
-        print 'Testing valid_move implementation for: QUEEN'
+        print('Testing valid_move implementation for: QUEEN')
         self.assertEqual(True, False)
 
     def test_rook(self):
-        print 'Testing valid_move implementation for: ROOK'
+        print('Testing valid_move implementation for: ROOK')
         self.assertEqual(True, False)
 
     def test_knight(self):
-        print 'Testing valid_move implementation for: KNIGHT'
+        print('Testing valid_move implementation for: KNIGHT')
         self.assertEqual(True, False)
 
     def test_bishop(self):
-        print 'Testing valid_move implementation for: BISHOP'
+        print('Testing valid_move implementation for: BISHOP')
         self.assertEqual(True, False)
 
     def test_king(self):
-        print 'Testing valid_move implementation for: KING'
+        print('Testing valid_move implementation for: KING')
         self.assertEqual(True, False)
 
     def test_pawn(self):
-        print 'Testing valid_move implementation for: PAWN'
+        print('Testing valid_move implementation for: PAWN')
         self.assertEqual(True, False)
 
 

@@ -9,22 +9,22 @@ class DoMoveTest(unittest.TestCase):
         self.board.set_start_pos()
 
     def test_queen(self):
-        print 'Testing do_move implementation for: QUEEN'
+        print('Testing do_move implementation for: QUEEN')
 
     def test_rook(self):
-        print 'Testing do_move implementation for: ROOK'
+        print('Testing do_move implementation for: ROOK')
 
     def test_knight(self):
-        print 'Testing do_move implementation for: KNIGHT'
+        print('Testing do_move implementation for: KNIGHT')
 
     def test_bishop(self):
-        print 'Testing do_move implementation for: BISHOP'
+        print('Testing do_move implementation for: BISHOP')
 
     def test_king(self):
-        print 'Testing do_move implementation for: KING'
+        print('Testing do_move implementation for: KING')
 
     def test_pawn(self):
-        print 'Testing do_move implementation for: PAWN'
+        print('Testing do_move implementation for: PAWN')
         result = self.board.do_move(P(0,1), P(0,3))
         self.assertEqual(result, True)
 

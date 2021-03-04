@@ -1,1 +1,1 @@
-import AlgNote, CheckTest, DoMove, ValidMove
+from . import AlgNote, CheckTest, DoMove, ValidMove

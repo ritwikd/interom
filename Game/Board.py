@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-import History, Pieces, Position
+
+from . import History, Pieces, Position
 
 P = Position.Position
 
@@ -173,7 +173,7 @@ class Board:
         Ps_c.append(Position.Position(P_n.x - 2, P_n.y - 1))
         Ps_c.append(Position.Position(P_n.x - 1, P_n.y - 2))
 
-        R_c = map(self.get_piece, Ps_c)
+        R_c = list(map(self.get_piece, Ps_c))
 
         knights = []
         for R in R_c:
@@ -197,11 +197,11 @@ class Board:
         r_c = P_n.y
 
         # Column
-        Ps_c += map(lambda n: Position.Position(c_c, n), range(8))
+        Ps_c += [Position.Position(c_c, n) for n in range(8)]
         # Row
-        Ps_c += map(lambda n: Position.Position(n, r_c), range(8))
+        Ps_c += [Position.Position(n, r_c) for n in range(8)]
 
-        R_c = map(self.get_piece, Ps_c)
+        R_c = list(map(self.get_piece, Ps_c))
 
         rooks = []
         for R in R_c:
@@ -315,8 +315,8 @@ class Board:
                             return False
                         if take:
                             self.taken.append(Piece_t)
-                        checks = True in map(lambda c_s: c_s[1], check_status.items())
-                        mates = True in map(lambda m_s: m_s[1], mate_status.items())
+                        checks = True in [c_s[1] for c_s in list(check_status.items())]
+                        mates = True in [m_s[1] for m_s in list(mate_status.items())]
                         move = History.Move.Move(white_move, Piece, P_o, P_n, True,
                                                  Piece_t, checks, mates, None)
                         self.log.add_move(move)
@@ -340,8 +340,8 @@ class Board:
                                 self.set_piece(P_ep_p, ep_p)
                                 return False
                             self.taken.append(ep_p)
-                            checks = True in map(lambda c_s: c_s[1], check_status.items())
-                            mates = True in map(lambda m_s: m_s[1], mate_status.items())
+                            checks = True in [c_s[1] for c_s in list(check_status.items())]
+                            mates = True in [m_s[1] for m_s in list(mate_status.items())]
                             move = History.Move.Move(white_move, Piece, P_o, P_n, True,
                                                      ep_p, checks, mates, None)
                             self.log.add_move(move)
@@ -372,8 +372,8 @@ class Board:
                                 return False
                             if take:
                                 self.taken.append(Piece_t)
-                            checks = True in map(lambda c_s: c_s[1], check_status.items())
-                            mates = True in map(lambda m_s: m_s[1], mate_status.items())
+                            checks = True in [c_s[1] for c_s in list(check_status.items())]
+                            mates = True in [m_s[1] for m_s in list(mate_status.items())]
                             move = History.Move.Move(white_move, Piece, P_o, P_n, True,
                                                      Piece_t, checks, mates, None)
                             self.log.add_move(move)
@@ -411,8 +411,8 @@ class Board:
                             self.set_piece(P_rook_o, None)
                             check_status = self.check_any()
                             mate_status = self.check_any()
-                            checks = True in map(lambda c_s: c_s[1], check_status.items())
-                            mates = True in map(lambda m_s: m_s[1], mate_status.items())
+                            checks = True in [c_s[1] for c_s in list(check_status.items())]
+                            mates = True in [m_s[1] for m_s in list(mate_status.items())]
                             if (white_move and check_status['w'] or
                                         not white_move and check_status['b']):
                                 # Revert move and return false
@@ -452,8 +452,8 @@ class Board:
                             return False
                         if take:
                             self.taken.append(Piece_t)
-                        checks = True in map(lambda c_s: c_s[1], check_status.items())
-                        mates = True in map(lambda m_s: m_s[1], mate_status.items())
+                        checks = True in [c_s[1] for c_s in list(check_status.items())]
+                        mates = True in [m_s[1] for m_s in list(mate_status.items())]
                         move = History.Move.Move(white_move, Piece, P_o, P_n, take,
                                                  Piece_t, checks, mates, None)
                         self.log.add_move(move)
@@ -485,8 +485,8 @@ class Board:
                         return False
                     if take:
                         self.taken.append(Piece_t)
-                    checks = True in map(lambda c_s: c_s[1], check_status.items())
-                    mates = True in map(lambda m_s: m_s[1], mate_status.items())
+                    checks = True in [c_s[1] for c_s in list(check_status.items())]
+                    mates = True in [m_s[1] for m_s in list(mate_status.items())]
                     move = History.Move.Move(white_move, Piece, P_o, P_n, True,
                                              Piece_t, checks, mates, None)
                     self.log.add_move(move)
@@ -503,7 +503,7 @@ class Board:
 
         P_n_not = self.P_to_nt(M.P_n)
 
-        if (M.castle in self.castle.keys()):
+        if (M.castle in list(self.castle.keys())):
             return self.castle[M.castle]
 
         # Piece type indicator
@@ -592,7 +592,7 @@ class Board:
         output.reverse()
 
         for line in output:
-            print ' '.join(line)
+            print(' '.join(line))
 
     def game_to_alg(self):
         moves = self.log.get_move_history()

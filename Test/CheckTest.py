@@ -10,7 +10,7 @@ class CheckTest(unittest.TestCase):
         K = Game.Pieces.Other.King.King
         Q = Game.Pieces.Major.Queen.Queen
 
-        print 'Testing board check implementation: BASIC'
+        print('Testing board check implementation: BASIC')
 
 
         K_w = K(self.board, P(4,0), True)
@@ -49,7 +49,7 @@ class CheckTest(unittest.TestCase):
         K = Game.Pieces.Other.King.King
         Q = Game.Pieces.Major.Queen.Queen
 
-        print 'Testing board check implementation: PINS'
+        print('Testing board check implementation: PINS')
 
         K_w = K(self.board, P(4, 0), True)
         K_b = K(self.board, P(4, 7), False)

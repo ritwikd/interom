@@ -1,1 +1,1 @@
-import King, Pawn
+from . import King, Pawn

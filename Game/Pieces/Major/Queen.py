@@ -27,16 +27,16 @@ class Queen(Piece.Piece):
 
             C_x_t = []
             if dsp_x > 0:
-                C_x_t = list(xrange(self.P_c.x, P_n.x, 1))
+                C_x_t = list(range(self.P_c.x, P_n.x, 1))
             else:
-                C_x_t = list(xrange(P_n.x, self.P_c.x, 1))
+                C_x_t = list(range(P_n.x, self.P_c.x, 1))
 
             # Generate Y-coordinates along Bishop move path
             C_y_t = []
             if dsp_y > 0:
-                C_y_t = list(xrange(self.P_c.y, P_n.y, 1))
+                C_y_t = list(range(self.P_c.y, P_n.y, 1))
             else:
-                C_y_t = list(xrange(P_n.y, self.P_c.y, 1))
+                C_y_t = list(range(P_n.y, self.P_c.y, 1))
 
             # Generate (X,Y) pairs along move path, not including start and end
             C_xy_t = []
@@ -45,7 +45,7 @@ class Queen(Piece.Piece):
                     C_xy_t.append([x, y])
 
             # Creates Position objects for each (X,Y) pair
-            Ps_c = map(lambda C_xy: P_gen(C_xy[0], C_xy[1]), C_xy_t)
+            Ps_c = [P_gen(C_xy[0], C_xy[1]) for C_xy in C_xy_t]
 
             # Checks if there are Pieces in path
             for P_c in Ps_c:
@@ -61,11 +61,11 @@ class Queen(Piece.Piece):
         elif d_x == 0 and d_y != 0:
             # Compute list of Y-coords to traverse
             if dsp_y < 0:
-                C_y_t = list(xrange(P_n.y, self.P_c.y, 1))
+                C_y_t = list(range(P_n.y, self.P_c.y, 1))
             else:
-                C_y_t = list(xrange(self.P_c.y, P_n.y, 1))
+                C_y_t = list(range(self.P_c.y, P_n.y, 1))
             # Create position objects to traverse
-            Ps_c = map(lambda y: P_gen(P_n.x, y), C_y_t)
+            Ps_c = [P_gen(P_n.x, y) for y in C_y_t]
             # Check if path is clear
             for P_c in Ps_c:
                 if P_c.y not in [P_n.y, self.P_c.y]:
@@ -78,11 +78,11 @@ class Queen(Piece.Piece):
         elif d_y == 0 and d_x != 0:
             # Compute list of X-coords to traverse
             if dsp_x < 0:
-                C_x_t = list(xrange(P_n.x, self.P_c.x, 1))
+                C_x_t = list(range(P_n.x, self.P_c.x, 1))
             else:
-                C_x_t = list(xrange(self.P_c.x, P_n.x, 1))
+                C_x_t = list(range(self.P_c.x, P_n.x, 1))
             # Create position objects to traverse
-            Ps_c = map(lambda x: P_gen(x, P_n.y), C_x_t)
+            Ps_c = [P_gen(x, P_n.y) for x in C_x_t]
             # Check if path is clear
             for P_c in Ps_c:
                 if P_c.x not in [P_n.x, self.P_c.x]:

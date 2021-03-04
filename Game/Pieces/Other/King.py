@@ -44,10 +44,10 @@ class King(Piece.Piece):
 
             # Check if path is clear
             if dsp_x < 0:
-                C_x_t = list(xrange(P_n.x, self.P_c.x, 1))
+                C_x_t = list(range(P_n.x, self.P_c.x, 1))
             else:
-                C_x_t = list(xrange(self.P_c.x, P_n.x, 1))
-            Ps_c = map(lambda x: P(x, P_n.y), C_x_t)
+                C_x_t = list(range(self.P_c.x, P_n.x, 1))
+            Ps_c = [P(x, P_n.y) for x in C_x_t]
             for P_c in Ps_c:
                 if P_c.x not in [self.P_c.x]:
                     R_P_c = self.board.get_piece(P_c)
