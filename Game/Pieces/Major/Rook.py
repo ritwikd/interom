@@ -28,11 +28,11 @@ class Rook(Piece.Piece):
         if d_x != 0 and d_y == 0:
             # Compute list of X-coords to traverse
             if dsp_x < 0:
-                C_x_t = list(xrange(P_n.x, self.P_c.x, 1))
+                C_x_t = list(range(P_n.x, self.P_c.x, 1))
             else:
-                C_x_t = list(xrange(self.P_c.x, P_n.x, 1))
+                C_x_t = list(range(self.P_c.x, P_n.x, 1))
             # Create position objects to traverse
-            Ps_c = map(lambda x: P_gen(x, P_n.y), C_x_t)
+            Ps_c = [P_gen(x, P_n.y) for x in C_x_t]
             # Check if path is clear
             for P_c in Ps_c:
                 if P_c.x not in [P_n.x, self.P_c.x]:
@@ -45,11 +45,11 @@ class Rook(Piece.Piece):
         elif d_x == 0 and d_y != 0:
             # Compute list of Y-coords to traverse
             if dsp_y < 0:
-                C_y_t = list(xrange(P_n.y, self.P_c.y, 1))
+                C_y_t = list(range(P_n.y, self.P_c.y, 1))
             else:
-                C_y_t = list(xrange(self.P_c.y, P_n.y, 1))
+                C_y_t = list(range(self.P_c.y, P_n.y, 1))
             # Create position objects to traverse
-            Ps_c = map(lambda y: P_gen(P_n.x, y), C_y_t)
+            Ps_c = [P_gen(P_n.x, y) for y in C_y_t]
             # Check if path is clear
             for P_c in Ps_c:
                 if P_c.y not in [P_n.y, self.P_c.y]:

@@ -1,1 +1,1 @@
-import Queen, Rook
+from . import Queen, Rook

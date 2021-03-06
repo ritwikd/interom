@@ -1,1 +1,1 @@
-import Major, Minor, Other
+from . import Major, Minor, Other

@@ -1,1 +1,1 @@
-import Bishop, Knight
+from . import Bishop, Knight
