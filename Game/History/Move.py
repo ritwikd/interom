@@ -1,10 +1,10 @@
 class Move:
-    def __init__(self, color, Piece, P_o, P_n, take=False, Piece_t=None,
+    def __init__(self, color, Piece, position_original, position_new, take=False, Piece_t=None,
                  check=False, mate=False, castle=None):
         self.color = color
         self.Piece = Piece
-        self.P_o = P_o
-        self.P_n = P_n
+        self.Position_original = position_original
+        self.position_new = position_new
 
         self.take = take
         self.Piece_t = Piece_t

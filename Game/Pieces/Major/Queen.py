@@ -1,93 +1,93 @@
 from Game import Piece, Position
 
-P_gen = Position.Position
+generate_position = Position.Position
 
 class Queen(Piece.Piece):
-    def __init__(self, board, P_s=(0,0), color=True):
-        Piece.Piece.__init__(self, board, P_s, 'Q', color)
+    def __init__(self, board, position_start=(0,0), color=True):
+        Piece.Piece.__init__(self, board, position_start, 'Q', color)
 
-    def valid_move(self, P_n):
-        d_x = abs(P_n.x - self.P_c.x)
-        dsp_x = P_n.x - self.P_c.x
-        d_y = abs(P_n.y - self.P_c.y)
-        dsp_y = P_n.y - self.P_c.y
+    def valid_move(self, position_new):
+        delta_x = abs(position_new.x - self.position_current.x)
+        displacement_x = position_new.x - self.position_current.x
+        delta_y = abs(position_new.y - self.position_current.y)
+        displacement_y = position_new.y - self.position_current.y
 
         # Check if new position if out of board
-        if self.board.out_of_board(P_n):
+        if self.board.out_of_board(position_new):
             return False
 
-        # Check if there is a piece on P_n, and if it is a take
-        R_P_n = self.board.get_piece(P_n)
-        if R_P_n[0]:
-            if R_P_n[1].color == self.color:
+        # Check if there is a piece on position_new, and if it is a take
+        position_new_store = self.board.get_piece(position_new)
+        if position_new_store[0]:
+            if position_new_store[1].color == self.color:
                 return False
 
         # Diagonal movement
-        if d_x != 0 and d_y != 0 and d_x == d_y:
+        if delta_x != 0 and delta_y != 0 and delta_x == delta_y:
 
-            C_x_t = []
-            if dsp_x > 0:
-                C_x_t = list(range(self.P_c.x, P_n.x, 1))
+            x_coordinate_store = []
+            if displacement_x > 0:
+                x_coordinate_store = list(range(self.position_current.x, position_new.x, 1))
             else:
-                C_x_t = list(range(P_n.x, self.P_c.x, 1))
+                x_coordinate_store = list(range(position_new.x, self.position_current.x, 1))
 
             # Generate Y-coordinates along Bishop move path
-            C_y_t = []
-            if dsp_y > 0:
-                C_y_t = list(range(self.P_c.y, P_n.y, 1))
+            y_coordinate_store = []
+            if displacement_y > 0:
+                y_coordinate_store = list(range(self.position_current.y, position_new.y, 1))
             else:
-                C_y_t = list(range(P_n.y, self.P_c.y, 1))
+                y_coordinate_store = list(range(position_new.y, self.position_current.y, 1))
 
             # Generate (X,Y) pairs along move path, not including start and end
-            C_xy_t = []
-            for x in C_x_t:
-                for y in C_y_t:
-                    C_xy_t.append([x, y])
+            xy_tuple_store = []
+            for x in x_coordinate_store:
+                for y in y_coordinate_store:
+                    xy_tuple_store.append([x, y])
 
             # Creates Position objects for each (X,Y) pair
-            Ps_c = [P_gen(C_xy[0], C_xy[1]) for C_xy in C_xy_t]
+            piece_conflict = [generate_position(xy_tuple[0], xy_tuple[1]) for xy_tuple in xy_tuple_store]
 
             # Checks if there are Pieces in path
-            for P_c in Ps_c:
-                if P_c.x not in [P_n.x, self.P_c.x] and \
-                                P_c.y not in [P_n.y, self.P_c.y]:
-                    R_P_c = self.board.get_piece(P_c)
-                    if R_P_c[0]:
+            for position_current in piece_conflict:
+                if position_current.x not in [position_new.x, self.position_current.x] and \
+                                position_current.y not in [position_new.y, self.position_current.y]:
+                    position_check = self.board.get_piece(position_current)
+                    if position_check[0]:
                         return False
 
             return True
 
         # Single-direction on Y
-        elif d_x == 0 and d_y != 0:
+        elif delta_x == 0 and delta_y != 0:
             # Compute list of Y-coords to traverse
-            if dsp_y < 0:
-                C_y_t = list(range(P_n.y, self.P_c.y, 1))
+            if displacement_y < 0:
+                y_coordinate_store = list(range(position_new.y, self.position_current.y, 1))
             else:
-                C_y_t = list(range(self.P_c.y, P_n.y, 1))
+                y_coordinate_store = list(range(self.position_current.y, position_new.y, 1))
             # Create position objects to traverse
-            Ps_c = [P_gen(P_n.x, y) for y in C_y_t]
+            piece_conflict = [generate_position(position_new.x, y) for y in y_coordinate_store]
             # Check if path is clear
-            for P_c in Ps_c:
-                if P_c.y not in [P_n.y, self.P_c.y]:
-                    R_P_c = self.board.get_piece(P_c)
-                    if R_P_c[0]:
+            for position_current in piece_conflict:
+                if position_current.y not in [position_new.y, self.position_current.y]:
+                    position_check = self.board.get_piece(position_current)
+                    if position_check[0]:
                         return False
             return True
 
         # Single direction on X
-        elif d_y == 0 and d_x != 0:
+        elif delta_y == 0 and delta_x != 0:
             # Compute list of X-coords to traverse
-            if dsp_x < 0:
-                C_x_t = list(range(P_n.x, self.P_c.x, 1))
+            if displacement_x < 0:
+                x_coordinate_store = list(range(position_new.x, self.position_current.x, 1))
             else:
-                C_x_t = list(range(self.P_c.x, P_n.x, 1))
+                x_coordinate_store = list(range(self.position_current.x, position_new.x, 1))
             # Create position objects to traverse
-            Ps_c = [P_gen(x, P_n.y) for x in C_x_t]
+            piece_conflict = [generate_position(x, position_new.y) for x in x_coordinate_store]
             # Check if path is clear
-            for P_c in Ps_c:
-                if P_c.x not in [P_n.x, self.P_c.x]:
-                    R_P_c = self.board.get_piece(P_c)
-                    if R_P_c[0]:
+            for position_current in piece_conflict:
+                if position_current.x not in [position_new.x, self.position_current.x]:
+                    position_check = self.board.get_piece(position_current)
+                    if position_check[0]:
                         return False
             return True
 
